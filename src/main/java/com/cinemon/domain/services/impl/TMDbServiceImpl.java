@@ -1,11 +1,13 @@
 package com.cinemon.domain.services.impl;
 
 import com.cinemon.domain.exceptions.NotFoundException;
+import com.cinemon.domain.exceptions.TMDbException;
 import com.cinemon.domain.services.TMDbService;
 import com.cinemon.web.model.response.TMDbDetailsModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.cinemon.domain.utils.APIUtils.SHOW_TYPES;
@@ -39,6 +41,7 @@ public class TMDbServiceImpl implements TMDbService {
 
     @Override
     public URI idUrl(long id, String type) throws URISyntaxException {
+
         String url = String.format("%s/%s/%d?api_key=%s", baseUrl, type.equalsIgnoreCase(SHOW_TYPES.MOVIE.name()) ? "movie" : "tv", id, apiKey);
         log.debug(url);
         return new URI(url);
