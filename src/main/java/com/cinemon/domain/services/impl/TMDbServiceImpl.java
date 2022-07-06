@@ -35,6 +35,8 @@ public class TMDbServiceImpl implements TMDbService {
     private static final String SEARCH_MOVIE_URL = "/search/movie";
     private static final String SEARCH_TV_URL = "/search/tv";
 
+    private static final String SEARCH_MULTI_URL = "/search/multi";
+
     private static final String IMDB_URL = "https://www.imdb.com/title";
     private final RestTemplate restTemplate;
 
@@ -49,17 +51,17 @@ public class TMDbServiceImpl implements TMDbService {
 
     @Override
     public String posterPath(String posterPath) {
-        return imageUrl.concat("/").concat(posterPath);
+        return imageUrl.concat(posterPath);
     }
 
     @Override
     public TMDbDetailsModel search(String name, String type) throws NotFoundException {
         URI uri = generateSearchUrl(name, type);
-        log.info("Searching for {} show {}", name, type);
+        log.debug("Searching for {} in {}s with url {}", name, type, uri);
         TMDbDetailsModel responseModel = restTemplate.getForObject(uri, TMDbDetailsModel.class);
-        if(responseModel.getResults().isEmpty()) {
-            log.error("No results found for {} show {}", name, type);
-            throw new NotFoundException("No results found for " + name + " " + type);
+        if (responseModel.getResults().isEmpty()) {
+            log.error("No results found for " + name + " in " + type + "s");
+            throw new NotFoundException("No results found for " + name + " in " + type + "s");
         }
         log.debug(responseModel.toString());
         return responseModel;
@@ -68,7 +70,12 @@ public class TMDbServiceImpl implements TMDbService {
     private URI generateSearchUrl(String name, String type) {
         String searchUrl = baseUrl;
 
-        searchUrl.concat(type.equalsIgnoreCase(SHOW_TYPES.MOVIE.name()) ? SEARCH_MOVIE_URL : SEARCH_TV_URL);
+        if (type.equalsIgnoreCase(SHOW_TYPES.MOVIE.name()))
+            searchUrl = searchUrl.concat(SEARCH_MOVIE_URL);
+        else if (type.equalsIgnoreCase(SHOW_TYPES.TV.name()))
+            searchUrl = searchUrl.concat(SEARCH_TV_URL);
+        else
+            searchUrl = searchUrl.concat(SEARCH_MULTI_URL);
 
         Map<String, String> params = new HashMap<>();
         params.put("api_key", apiKey);

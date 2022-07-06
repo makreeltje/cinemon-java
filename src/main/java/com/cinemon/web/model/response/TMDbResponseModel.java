@@ -10,8 +10,6 @@ import lombok.Data;
 public class TMDbResponseModel {
     private Long id;
     private String overview;
-    @JsonProperty("imdb_id")
-    private String imdbId;
     private String title;
     @JsonProperty("poster_path")
     private String posterPath;
@@ -20,6 +18,4 @@ public class TMDbResponseModel {
     @JsonProperty("release_date")
     private String releaseDate;
     private boolean adult;
-    private Long runtime;
-    private String status;
 }
