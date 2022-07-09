@@ -69,7 +69,7 @@ public class TMDbServiceImplTest {
 
     @Test
     void posterPathTest() {
-        var storedPosterPath = tmdbService.posterPath("cpWUtkcgRKeauhTyVMjYHxAutp4.jpg");
+        var storedPosterPath = tmdbService.posterPath("/cpWUtkcgRKeauhTyVMjYHxAutp4.jpg");
         log.debug(storedPosterPath);
 
         assertNotNull(storedPosterPath);
