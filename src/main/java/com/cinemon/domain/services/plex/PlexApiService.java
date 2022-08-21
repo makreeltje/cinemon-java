@@ -1,5 +1,9 @@
 package com.cinemon.domain.services.plex;
 
+import com.cinemon.web.model.response.plex.ServerDetails;
+
+import java.util.List;
+
 public interface PlexApiService {
 
 //    void getServerFriendlyName();
@@ -13,7 +17,7 @@ public interface PlexApiService {
 //    void getLibraryRecetlyAdded(String sectionId, String start, String count);
 //    void getChildrenListRelated(String ratingKey);
 //    void getChildrensList(String ratingKey);
-    String getServerList();
+    List<ServerDetails> getServerList();
 //    void getServerPrefs();
 //    void getLocalServerIdentity();
 //    void getLibrariesList();

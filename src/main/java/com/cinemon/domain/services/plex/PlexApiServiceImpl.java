@@ -1,6 +1,8 @@
 package com.cinemon.domain.services.plex;
 
 import com.cinemon.domain.exceptions.PlexException;
+import com.cinemon.web.model.response.plex.Server;
+import com.cinemon.web.model.response.plex.ServerDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,13 +39,13 @@ public class PlexApiServiceImpl implements PlexApiService {
     private final RestTemplate restTemplate;
 
     @Override
-    public String getServerList() {
+    public List<ServerDetails> getServerList() {
         log.info("Getting server list");
         var url = createUri("/servers");
-        ResponseEntity<String> response = restTemplate.getForEntity(createUri("/servers"), String.class);
+        ResponseEntity<Server> response = restTemplate.getForEntity(createUri("/servers"), Server.class);
         log.info("Server list: {}", response.getBody());
 
-        return response.getBody();
+        return response.getBody().getMediaContainer().getServer();
     }
 
     private URI createUri(String path) {

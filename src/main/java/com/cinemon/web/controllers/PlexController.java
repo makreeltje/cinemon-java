@@ -1,6 +1,7 @@
 package com.cinemon.web.controllers;
 
 import com.cinemon.domain.services.plex.PlexApiService;
+import com.cinemon.web.model.response.plex.ServerDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/plex")
@@ -20,9 +23,9 @@ public class PlexController {
     private final PlexApiService service;
 
     @GetMapping("/servers")
-    public ResponseEntity<String> getServerList() {
+    public ResponseEntity<List<ServerDetails>> getServerList() {
         log.info("Getting server list");
-        String response = service.getServerList();
+        var response = service.getServerList();
         log.info("Found server list {}", response);
         return ResponseEntity.ok(response);
     }
